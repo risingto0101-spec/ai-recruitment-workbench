@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
 
       - name: Build EXE with PyInstaller
         run: |
-          pyinstaller --noconfirm --onefile --windowed --name "AI招聘工作台" --icon=extension/icons/icon48.png --add-data "app/templates;app/templates" --add-data "app/static;app/static" --add-data "extension;extension" entry.py
+          pyinstaller --noconfirm --onefile --windowed --name "AI招聘工作台" --add-data "app/templates;app/templates" --add-data "app/static;app/static" --add-data "extension;extension" entry.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
