@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}数据看板 - AI 招聘工作台{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">数据看板</h1>
+</div>
+
+<h3 style="margin-top:0">核心指标</h3>
+<div class="stat-grid" id="dashboard-stats">
+    <div class="stat-card">
+        <div class="stat-label">岗位总数</div>
+        <div class="stat-value" id="stat-total-jobs">-</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">开放岗位</div>
+        <div class="stat-value" id="stat-open-jobs">-</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">候选人总数</div>
+        <div class="stat-value" id="stat-total-candidates">-</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">平均匹配分</div>
+        <div class="stat-value" id="stat-avg-score">-</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">近7天新增候选人</div>
+        <div class="stat-value" id="stat-recent-candidates">-</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">待跟进候选人</div>
+        <div class="stat-value" id="stat-follow-up">-</div>
+    </div>
+</div>
+
+<div class="card" style="margin-top:20px">
+    <h3 style="margin-top:0">候选人状态分布</h3>
+    <div id="status-chart-container" style="padding-top:10px"></div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

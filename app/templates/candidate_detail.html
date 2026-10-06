@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}候选人详情 - AI 招聘工作台{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title" id="detail-title">候选人详情</h1>
+    <div>
+        <a class="btn btn-secondary" href="/talent-pool">返回人才库</a>
+        <button class="btn btn-primary" onclick="saveCandidateChanges()">保存修改</button>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-top:0">基本信息</h3>
+    <form id="candidate-form">
+        <input type="hidden" id="c-id">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">姓名 *</label>
+                <input class="form-input" id="c-name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">电话</label>
+                <input class="form-input" id="c-phone">
+            </div>
+            <div class="form-group">
+                <label class="form-label">邮箱</label>
+                <input class="form-input" id="c-email">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">当前公司</label>
+                <input class="form-input" id="c-current-company">
+            </div>
+            <div class="form-group">
+                <label class="form-label">当前职位</label>
+                <input class="form-input" id="c-current-title">
+            </div>
+            <div class="form-group">
+                <label class="form-label">工作年限</label>
+                <input class="form-input" id="c-years" type="number" step="0.5" min="0">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">期望最低月薪</label>
+                <input class="form-input" id="c-salary-min" type="number" min="0">
+            </div>
+            <div class="form-group">
+                <label class="form-label">期望最高月薪</label>
+                <input class="form-input" id="c-salary-max" type="number" min="0">
+            </div>
+            <div class="form-group">
+                <label class="form-label">期望地点</label>
+                <input class="form-input" id="c-expected-location">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">技能（逗号分隔）</label>
+            <input class="form-input" id="c-skills">
+        </div>
+        <div class="form-group">
+            <label class="form-label">备注</label>
+            <textarea class="form-textarea" id="c-notes" rows="3"></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">状态</label>
+                <select class="form-select" id="c-status"></select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">来源</label>
+                <input class="form-input" id="c-source" readonly>
+            </div>
+            <div class="form-group">
+                <label class="form-label">录入时间</label>
+                <input class="form-input" id="c-created" readonly>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h3 style="margin-top:0">岗位匹配</h3>
+    <div id="matches-container">
+        <div class="empty-state">暂无匹配结果</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3 style="margin-top:0">快速话术</h3>
+    <div class="form-row">
+        <div class="form-group">
+            <label class="form-label">选择岗位</label>
+            <select class="form-select" id="msg-job"><option value="">选择岗位</option></select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">话术类型</label>
+            <select class="form-select" id="msg-category">
+                <option value="invite">初次联系</option>
+                <option value="interview">面试邀请</option>
+                <option value="follow">跟进提醒</option>
+                <option value="reject">不合适婉拒</option>
+            </select>
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end">
+            <button class="btn btn-primary" onclick="generateMessage()">生成话术</button>
+        </div>
+    </div>
+    <textarea class="form-textarea" id="msg-result" rows="4" readonly></textarea>
+    <button class="btn btn-secondary" style="margin-top:10px" onclick="copyMessage()">复制话术</button>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/candidate_detail.js"></script>
+{% endblock %}

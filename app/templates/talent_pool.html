@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}人才库 - AI 招聘工作台{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">人才库</h1>
+</div>
+<div class="card">
+    <div class="filters">
+        <select class="form-select" id="filter-status" onchange="loadTalentPool()">
+            <option value="">全部状态</option>
+            <option value="new">未联系</option>
+            <option value="contacted">已联系</option>
+            <option value="interviewing">面试中</option>
+            <option value="offered">已发 offer</option>
+            <option value="hired">已入职</option>
+            <option value="rejected">已拒绝</option>
+        </select>
+        <select class="form-select" id="filter-job" onchange="loadTalentPool()">
+            <option value="">全部岗位</option>
+        </select>
+        <select class="form-select" id="filter-source" onchange="loadTalentPool()">
+            <option value="">全部来源</option>
+            <option value="manual">手动录入</option>
+            <option value="upload">文件上传</option>
+            <option value="plugin">浏览器插件</option>
+        </select>
+        <input class="form-input" id="filter-score-min" type="number" min="0" max="100" placeholder="最低综合分" onchange="loadTalentPool()">
+        <input class="form-input" id="filter-q" type="text" placeholder="姓名/公司/职位" oninput="debounceLoadTalentPool()">
+    </div>
+    <div id="talent-table-container">
+        <div class="empty-state">正在加载人才库...</div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/talent_pool.js"></script>
+{% endblock %}

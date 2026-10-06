@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}录入候选人 - AI 招聘工作台{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">录入候选人</h1>
+</div>
+
+<div class="card">
+    <div class="tabs">
+        <div class="tab active" data-tab="text" onclick="switchTab('text')">文本粘贴</div>
+        <div class="tab" data-tab="file" onclick="switchTab('file')">文件上传</div>
+    </div>
+
+    <div id="panel-text" class="tab-panel">
+        <div class="form-group">
+            <label class="form-label">候选人信息 / 简历文本</label>
+            <textarea class="form-textarea" id="candidate-text" rows="12" placeholder="粘贴简历文本、BOSS/前程无忧页面正文..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="parseCandidateText()">解析文本</button>
+    </div>
+
+    <div id="panel-file" class="tab-panel" style="display:none">
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('candidate-file').click()">
+            <div>点击或拖拽上传 PDF / DOCX / TXT 简历</div>
+            <input type="file" id="candidate-file" accept=".pdf,.docx,.doc,.txt" style="display:none" onchange="uploadFile(this)">
+        </div>
+        <div id="upload-result"></div>
+    </div>
+</div>
+
+<!-- 解析结果预览与编辑 -->
+<div class="card" id="preview-card" style="display:none">
+    <h3 style="margin-top:0">解析结果预览</h3>
+    <form id="candidate-form">
+        <input type="hidden" id="candidate-id">
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">姓名 *</label>
+                <input class="form-input" id="c-name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">电话</label>
+                <input class="form-input" id="c-phone">
+            </div>
+            <div class="form-group">
+                <label class="form-label">邮箱</label>
+                <input class="form-input" id="c-email">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">当前公司</label>
+                <input class="form-input" id="c-current-company">
+            </div>
+            <div class="form-group">
+                <label class="form-label">当前职位</label>
+                <input class="form-input" id="c-current-title">
+            </div>
+            <div class="form-group">
+                <label class="form-label">工作年限</label>
+                <input class="form-input" id="c-years" type="number" step="0.5" min="0">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label class="form-label">期望最低月薪（元）</label>
+                <input class="form-input" id="c-salary-min" type="number" min="0">
+            </div>
+            <div class="form-group">
+                <label class="form-label">期望最高月薪（元）</label>
+                <input class="form-input" id="c-salary-max" type="number" min="0">
+            </div>
+            <div class="form-group">
+                <label class="form-label">期望地点</label>
+                <input class="form-input" id="c-expected-location">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-label">技能（逗号分隔）</label>
+            <input class="form-input" id="c-skills" placeholder="例如：Python, MySQL, Redis">
+        </div>
+        <div class="form-group">
+            <label class="form-label">原始文本</label>
+            <textarea class="form-textarea" id="c-raw-text" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">备注</label>
+            <textarea class="form-textarea" id="c-notes" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">来源</label>
+            <select class="form-select" id="c-source">
+                <option value="manual">手动录入</option>
+                <option value="upload">文件上传</option>
+                <option value="plugin">浏览器插件</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">意向岗位</label>
+            <select class="form-select" id="c-intended-job"><option value="">暂无</option></select>
+        </div>
+    </form>
+    <div style="margin-top:16px; display:flex; gap:10px">
+        <button class="btn btn-primary" onclick="saveCandidate()">保存候选人</button>
+        <button class="btn btn-secondary" onclick="resetPreview()">重置</button>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/candidates.js"></script>
+{% endblock %}

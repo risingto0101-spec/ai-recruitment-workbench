@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}岗位管理 - AI 招聘工作台{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">岗位管理</h1>
+    <button class="btn btn-primary" onclick="openJobModal()">+ 新增岗位</button>
+</div>
+<div class="card">
+    <div class="filters">
+        <select class="form-select" id="filter-status" onchange="loadJobs()">
+            <option value="">全部状态</option>
+            <option value="open">开放</option>
+            <option value="paused">暂停</option>
+            <option value="closed">关闭</option>
+        </select>
+        <button class="btn btn-secondary" onclick="loadJobs()">刷新</button>
+    </div>
+    <div id="jobs-table-container">
+        <div class="empty-state">正在加载岗位数据...</div>
+    </div>
+</div>
+
+<!-- 新增/编辑岗位模态框 -->
+<div class="modal-overlay" id="job-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title" id="job-modal-title">新增岗位</h3>
+            <button class="modal-close" onclick="closeJobModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="job-form">
+                <input type="hidden" id="job-id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">岗位标题 *</label>
+                        <input class="form-input" id="job-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">部门</label>
+                        <input class="form-input" id="job-department">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">工作地点</label>
+                        <input class="form-input" id="job-location">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">状态</label>
+                        <select class="form-select" id="job-status">
+                            <option value="open">开放</option>
+                            <option value="paused">暂停</option>
+                            <option value="closed">关闭</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">最低月薪（元）</label>
+                        <input class="form-input" id="job-salary-min" type="number" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">最高月薪（元）</label>
+                        <input class="form-input" id="job-salary-max" type="number" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">最低年限</label>
+                        <input class="form-input" id="job-min-years" type="number" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">最高年限（0=不限）</label>
+                        <input class="form-input" id="job-max-years" type="number" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">必需技能（逗号分隔）</label>
+                    <input class="form-input" id="job-required-skills" placeholder="例如：Python, MySQL, Redis">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">加分技能（逗号分隔）</label>
+                    <input class="form-input" id="job-preferred-skills" placeholder="例如：Kubernetes, 微服务">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">岗位描述 / JD</label>
+                    <textarea class="form-textarea" id="job-description" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">岗位要求</label>
+                    <textarea class="form-textarea" id="job-requirements" rows="5"></textarea>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeJobModal()">取消</button>
+            <button class="btn btn-primary" onclick="saveJob()">保存岗位</button>
+        </div>
+    </div>
+</div>
+
+<!-- 解析 JD 模态框 -->
+<div class="modal-overlay" id="parse-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 class="modal-title">AI 解析 JD</h3>
+            <button class="modal-close" onclick="closeParseModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="form-label">粘贴 JD 文本</label>
+                <textarea class="form-textarea" id="parse-text" rows="12" placeholder="粘贴完整的 JD 文本，AI/规则引擎会自动提取岗位信息..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeParseModal()">取消</button>
+            <button class="btn btn-primary" onclick="parseJD()">开始解析</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="/static/js/jobs.js"></script>
+{% endblock %}
